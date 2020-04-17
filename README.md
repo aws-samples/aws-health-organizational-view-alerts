@@ -1,5 +1,5 @@
 
-![](https://github.com/jordanaroth/awsHealthToSlack/raw/master/asset-images/ahova_banner.png?raw=1)
+![](https://github.com/aws-samples/aws-health-organizational-view-alerts/raw/master/asset-images/ahova_banner.png?raw=1)
 
 
 **Table of Contents**
@@ -23,7 +23,7 @@
 AWS Health Organizational View Alerts (AHOVA) is an automated notification tool for sending well-formatted AWS Health Organization Alerts to your Amazon Chime or Slack room/channel if are utilizing an AWS Organization and have Business or Enterprise Support on all accounts in the Organization.
 
 # Architecture
-![](https://github.com/jordanaroth/awsHealthToSlack/raw/master/asset-images/architecture.png?raw=1)
+![](https://github.com/aws-samples/aws-health-organizational-view-alerts/raw/master/asset-images/architecture.png?raw=1)
 
 | Resource | Description                    |
 | ------------- | ------------------------------ |
