@@ -9,8 +9,6 @@ Metadata:
             Parameters:
               - S3LambdaCodeBucket
               - S3LambdaCodeZip
-              - S3BotoCodeBucket
-              - S3BotoCodeZip
           - Label:
               default: 'Environment Variables'
             Parameters:
@@ -24,11 +22,7 @@ Metadata:
           S3LambdaCodeBucket:
             default: 'Lambda Bucket'
           S3LambdaCodeZip:
-            default: 'Lambda Key'
-          S3BotoCodeBucket:
-            default: 'Boto Bucket'
-          S3BotoCodeZip:
-            default: 'Boto Key'            
+            default: 'Lambda Key'         
           EnvTimeToSearch:
             default: 'Search Back'
           EnvRegions:
@@ -60,19 +54,7 @@ Parameters:
         Type: String
         Default: healthapi-slack-v0.0.0.zip
         AllowedPattern: .*\.zip$
-        ConstraintDescription: Lambda Key or Boto Key location does not end in .zip
-    S3BotoCodeBucket:
-        Description: The S3 bucket name that contains the boto3-v0.0.0.zip layer package (needs to be in same region you're launching this in)
-        Type: String
-        Default: your-bucket-name-only
-        AllowedPattern: (?!^(\d{1,3}\.){3}\d{1,3}$)(^[a-z0-9]([a-z0-9-]*(\.[a-z0-9])?)*$(?<!\-))
-        ConstraintDescription: Invalid S3 Bucket name, make sure you JUST put in the name of your bucket
-    S3BotoCodeZip:
-        Description: The name of the .zip in the above bucket (if in a folder, be sure to include the path, i.e. layers/boto3-v0.0.0.zip)
-        Type: String
-        Default: boto3-v0.0.0.zip 
-        AllowedPattern: .*\.zip$
-        ConstraintDescription: Lambda Key or Boto Key location does not end in .zip        
+        ConstraintDescription: Lambda Key location does not end in .zip      
 Resources:
     SlackKMSKey:
         Type: 'AWS::KMS::Key'
@@ -229,21 +211,10 @@ Resources:
             Description: Lambda code to encrypt Slack Webhook
             Role: !GetAtt 'EncryptLambdaExecutionRole.Arn'
             Runtime: python3.7  
-    UpdatedBoto3:
-        Type: AWS::Lambda::LayerVersion
-        Properties:
-            CompatibleRuntimes:
-              - python3.7
-            Content:
-                S3Bucket: !Ref S3BotoCodeBucket
-                S3Key: !Ref S3BotoCodeZip
-            Description: Updated version of boto3
     LambdaAwsHealthStatus:
         Type: 'AWS::Lambda::Function'
         Properties:
             Handler: lambda_function.lambda_handler
-            Layers:
-              - !Ref UpdatedBoto3
             Role: !GetAtt DecryptLambdaExecutionRole.Arn
             Runtime: python3.7
             Timeout: 90
